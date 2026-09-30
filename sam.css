@@ -127,8 +127,15 @@
   flex: 1; min-height: 0; overflow-y: auto; padding: 22px 20px; display: none; flex-direction: column; gap: 11px;
 }
 .sam[data-state="live"] .sam-thread,
-.sam[data-state="ended"] .sam-thread { display: flex; }
+.sam[data-state="ended"] .sam-thread { display: flex; overscroll-behavior: contain; scroll-behavior: smooth; }
 .sam[data-mode="typed"] .sam-thread { min-height: 280px; }
+/* once a conversation exists the card stops growing; the thread scrolls inside it */
+.sam[data-state="live"], .sam[data-state="ended"] {
+  height: min(72vh, 640px); max-height: min(72vh, 640px); overflow: hidden;
+}
+.sam-thread::-webkit-scrollbar { width: 8px; }
+.sam-thread::-webkit-scrollbar-thumb { background: var(--sam-line); border-radius: 8px; }
+.sam-thread::-webkit-scrollbar-track { background: transparent; }
 .sam-msg {
   max-width: 86%; padding: 11px 15px; font-size: 15.5px; line-height: 1.48; white-space: pre-wrap;
   animation: sam-rise .26s ease both;
@@ -187,6 +194,7 @@
 
 @media (max-width: 1000px) {
   .sam { min-height: 0; }
+  .sam[data-state="live"], .sam[data-state="ended"] { height: min(80vh, 640px); max-height: min(80vh, 640px); }
   .sam-orbwrap { width: 168px; height: 168px; }
   .sam-orb { width: 120px; height: 120px; }
   .sam-stage { padding: 24px 20px 18px; }
