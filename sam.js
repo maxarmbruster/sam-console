@@ -295,9 +295,12 @@ class SamConsole {
 
   addMessage(text, who) {
     if (!text) return;
+    text = String(text).trim().replace(/^["\u201C](.*)["\u201D]$/s, "$1"); // drop wrapping quotes some agents emit
+    const t = this.thread;
+    const pinned = t.scrollHeight - t.scrollTop - t.clientHeight < 90; // only follow if the reader is at the bottom
     const el = h("div", { class: `sam-msg sam-msg-${who}` }, text);
-    this.thread.append(el);
-    this.thread.scrollTop = this.thread.scrollHeight;
+    t.append(el);
+    if (pinned || who === "you") t.scrollTop = t.scrollHeight;
     return el;
   }
 
